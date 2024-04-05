@@ -1,0 +1,1 @@
+mongodb+srv://GabrielRibeiro19:qOSYjSde9klAiWov@picles-api.maewy08.mongodb.net/
