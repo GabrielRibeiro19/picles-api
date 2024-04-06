@@ -1,15 +1,28 @@
 import { IUseCase } from "src/domain/iusecase.interface";
 import GetShelterDetailsUseCaseOutput from "./dtos/get.shelter.details.usecase.output";
+import IShelterRepository from "../interfaces/shelter.repository.interface";
+import { Inject, Injectable } from "@nestjs/common";
+import ShelterTokens from "../shelter.tokens";
 
+@Injectable()
 export default class GetShelterDetailsUseCase implements IUseCase<null, GetShelterDetailsUseCaseOutput> {
-  run(input: null): Promise<GetShelterDetailsUseCaseOutput> {
-    return Promise.resolve(new GetShelterDetailsUseCaseOutput({
-      shelterName: 'Abrigo Bigo',
-      shelterEmail: 'abb@gmail.com',
-      shelterPhone: '123456789',
-      shelterWhatsapp: '123456789',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }))
+
+  constructor(
+    @Inject(ShelterTokens.shelterRepository)
+    private readonly shelterRepository: IShelterRepository,
+  ) {}
+
+  async run(input: null): Promise<GetShelterDetailsUseCaseOutput> {
+    const shelter = await this.shelterRepository.get();
+
+
+    return new GetShelterDetailsUseCaseOutput({
+      shelterName: shelter.name,
+      shelterEmail: shelter.email,
+      shelterPhone: shelter.phone,
+      shelterWhatsapp: shelter.whatsApp,
+      createdAt: shelter.createdAt,
+      updatedAt: shelter.updatedAt,
+    });
   }
 }
