@@ -12,21 +12,22 @@ export default class CreatePetUseCase implements IUseCase<CreatePetUseCaseInput,
   constructor(
     @Inject(PetTokens.petRepository)
     private readonly petRepository: IPetRepository
-  ){}
+  ) { }
 
   async run(input: CreatePetUseCaseInput): Promise<CreatePetUseCaseOutput> {
-    await this.petRepository.create(input);
 
-    const pet = await this.petRepository.create({
-      name: input.name,
-      type: input.type,
-      bio: input.bio,
-      gender: input.gender,
-      size: input.size,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
+    const newPet = await this.petRepository.create(input)
+    return new CreatePetUseCaseOutput({
+      id: newPet._id,
+      name: newPet.name,
+      type: newPet.type,
+      size: newPet.size,
+      gender: newPet.gender,
+      bio: newPet.bio,
+      photo: newPet.photo,
+      createdAt: newPet.createdAt,
+      updatedAt: newPet.updatedAt
+    })
 
-    return new CreatePetUseCaseOutput(pet)
   }
 }
