@@ -1,7 +1,7 @@
 export default class CreatePetUseCaseInput {
   name: string;
-  type: string
-  size: string
+  type: string;
+  size: string;
   gender: string;
   bio: string;
 

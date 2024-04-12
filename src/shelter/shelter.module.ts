@@ -25,7 +25,7 @@ import UpdateShelterDetailsUseCase from './usecases/update.shelter.details.useca
     {
       provide: ShelterTokens.updateShelterDetailsUseCase,
       useClass: UpdateShelterDetailsUseCase,
-    }
+    },
   ],
 })
-export class ShelterModule { }
+export class ShelterModule {}

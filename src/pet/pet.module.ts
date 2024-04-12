@@ -8,12 +8,13 @@ import { Pet, PetSchema } from './schemas/pet.schema';
 import GetPetByIdUseCase from './usecases/get.pet.by.id.usecase';
 import UpdatePetByIdUseCase from './usecases/update.pet.by.id.usecase';
 import DeletePetByIdUseCase from './usecases/delete.pet.by.id.usecase';
+import UpdatePetPhotoByIdUseCase from './usecases/update.pet.photo.by.id.usecase';
+import AppTokens from 'src/app.tokens';
+import FileService from 'src/file.service';
 
 @Module({
   controllers: [PetController],
-  imports: [
-    MongooseModule.forFeature([{ name: Pet.name, schema: PetSchema }]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: Pet.name, schema: PetSchema }])],
 
   providers: [
     {
@@ -33,9 +34,17 @@ import DeletePetByIdUseCase from './usecases/delete.pet.by.id.usecase';
       useClass: DeletePetByIdUseCase,
     },
     {
+      provide: PetTokens.updatePetPhotoByIdUseCase,
+      useClass: UpdatePetPhotoByIdUseCase,
+    },
+    {
       provide: PetTokens.petRepository,
       useClass: PetRepository,
-    }
-  ]
+    },
+    {
+      provide: AppTokens.fileService,
+      useClass: FileService,
+    },
+  ],
 })
-export class PetModule { }
+export class PetModule {}

@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString, MaxLength } from "class-validator";
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export default class UpdatePetControllerInput {
-
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -12,7 +11,7 @@ export default class UpdatePetControllerInput {
 
   @IsString()
   @IsNotEmpty()
-  size: string
+  size: string;
 
   @IsString()
   @IsNotEmpty()

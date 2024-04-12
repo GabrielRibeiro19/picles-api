@@ -8,21 +8,20 @@ import ShelterTokens from '../shelter.tokens';
 @Injectable()
 export default class UpdateShelterDetailsUseCase
   implements
-  IUseCase<
-    UpdateShelterDetailsUseCaseInput,
-    UpdateShelterDetailsUseCaseOutput
-  > {
+    IUseCase<
+      UpdateShelterDetailsUseCaseInput,
+      UpdateShelterDetailsUseCaseOutput
+    >
+{
   constructor(
     @Inject(ShelterTokens.shelterRepository)
-    private readonly shelterRepository: IShelterRepository
-  ) { }
-  async run(
-    input: UpdateShelterDetailsUseCaseInput
-  ): Promise<UpdateShelterDetailsUseCaseOutput> {
+    private readonly shelterRepository: IShelterRepository,
+  ) {}
 
-    await this.shelterRepository.update(
-      input
-    );
+  async run(
+    input: UpdateShelterDetailsUseCaseInput,
+  ): Promise<UpdateShelterDetailsUseCaseOutput> {
+    await this.shelterRepository.update(input);
 
     const shelter = await this.shelterRepository.get();
 
@@ -32,7 +31,7 @@ export default class UpdateShelterDetailsUseCase
       whatsApp: shelter.whatsApp,
       email: shelter.email,
       createdAt: shelter.createdAt,
-      updatedAt: shelter.updatedAt
-    })
+      updatedAt: shelter.updatedAt,
+    });
   }
 }

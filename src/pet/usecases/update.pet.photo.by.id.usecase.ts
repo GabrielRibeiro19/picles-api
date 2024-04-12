@@ -1,45 +1,51 @@
 import { IUseCase } from 'src/domain/iusecase.interface';
-import UpdatePetByIdUseCaseOutput from './dtos/update.pet.by.id.usecase.output';
-import UpdatePetByIdUseCaseInput from './dtos/update.pet.by.id.usecase.input';
 import { Inject, Injectable } from '@nestjs/common';
 import PetTokens from '../pet.tokens';
 import IPetRepository from '../interfaces/pet.repository.interface';
 import { Pet } from '../schemas/pet.schema';
 import PetNotFoundError from 'src/domain/errors/pet.not.found.error';
+import UpdatePetPhotoByIdUseCaseInput from './dtos/update.pet.photo.by.id.usecase.input';
+import UpdatePetPhotoByIdUseCaseOutput from './dtos/update.pet.photo.by.id.usecase.output';
+import AppTokens from 'src/app.tokens';
+import IFileService from 'src/interfaces/file.service.interface';
 
 @Injectable()
-export default class UpdatePetByIdUseCase
-  implements IUseCase<UpdatePetByIdUseCaseInput, UpdatePetByIdUseCaseOutput>
+export default class UpdatePetPhotoByIdUseCase
+  implements
+    IUseCase<UpdatePetPhotoByIdUseCaseInput, UpdatePetPhotoByIdUseCaseOutput>
 {
   constructor(
     @Inject(PetTokens.petRepository)
     private readonly petRepository: IPetRepository,
+
+    @Inject(AppTokens.fileService)
+    private readonly fileService: IFileService,
   ) {}
 
   async run(
-    input: UpdatePetByIdUseCaseInput,
-  ): Promise<UpdatePetByIdUseCaseOutput> {
-    let pet = await this.getPetById(input.id);
+    input: UpdatePetPhotoByIdUseCaseInput,
+  ): Promise<UpdatePetPhotoByIdUseCaseOutput> {
+    const pet = await this.getPetById(input.id);
 
     if (!pet) {
       throw new PetNotFoundError();
     }
 
     await this.petRepository.updateById({
-      ...input,
       _id: input.id,
+      photo: input.photoPath,
     });
 
-    pet = await this.getPetById(input.id);
+    const photo = await this.fileService.readFile(input.photoPath);
 
-    return new UpdatePetByIdUseCaseOutput({
+    return new UpdatePetPhotoByIdUseCaseOutput({
       id: pet._id,
       name: pet.name,
       type: pet.type,
       size: pet.size,
       gender: pet.gender,
       bio: pet.bio,
-      photo: pet.photo,
+      photo: photo.toString('base64'),
       createdAt: pet.createdAt,
       updatedAt: pet.updatedAt,
     });
