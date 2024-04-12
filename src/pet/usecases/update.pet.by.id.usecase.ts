@@ -6,6 +6,8 @@ import PetTokens from '../pet.tokens';
 import IPetRepository from '../interfaces/pet.repository.interface';
 import { Pet } from '../schemas/pet.schema';
 import PetNotFoundError from 'src/domain/errors/pet.not.found.error';
+import AppTokens from 'src/app.tokens';
+import IFileService from 'src/interfaces/file.service.interface';
 
 @Injectable()
 export default class UpdatePetByIdUseCase
@@ -14,6 +16,9 @@ export default class UpdatePetByIdUseCase
   constructor(
     @Inject(PetTokens.petRepository)
     private readonly petRepository: IPetRepository,
+
+    @Inject(AppTokens.fileService)
+    private readonly fileService: IFileService,
   ) {}
 
   async run(
@@ -24,6 +29,11 @@ export default class UpdatePetByIdUseCase
     if (!pet) {
       throw new PetNotFoundError();
     }
+
+    // eslint-disable-next-line no-extra-boolean-cast
+    const petPhoto = !!pet.photo
+      ? (await this.fileService.readFile(pet.photo)).toString('base64')
+      : null;
 
     await this.petRepository.updateById({
       ...input,
@@ -39,7 +49,7 @@ export default class UpdatePetByIdUseCase
       size: pet.size,
       gender: pet.gender,
       bio: pet.bio,
-      photo: pet.photo,
+      photo: petPhoto,
       createdAt: pet.createdAt,
       updatedAt: pet.updatedAt,
     });
