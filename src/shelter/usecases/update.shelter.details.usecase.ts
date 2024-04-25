@@ -28,7 +28,7 @@ export default class UpdateShelterDetailsUseCase
     return new UpdateShelterDetailsUseCaseOutput({
       name: shelter.name,
       phone: shelter.phone,
-      whatsApp: shelter.whatsApp,
+      whatsapp: shelter.whatsapp,
       email: shelter.email,
       createdAt: shelter.createdAt,
       updatedAt: shelter.updatedAt,

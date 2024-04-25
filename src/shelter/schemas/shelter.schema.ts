@@ -9,7 +9,7 @@ export class Shelter {
   name: string;
 
   @Prop({ required: true })
-  whatsApp: string;
+  whatsapp: string;
 
   @Prop({ required: true })
   email: string;

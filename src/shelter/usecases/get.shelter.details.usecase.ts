@@ -20,7 +20,7 @@ export default class GetShelterDetailsUseCase
       shelterName: shelter.name,
       shelterEmail: shelter.email,
       shelterPhone: shelter.phone,
-      shelterWhatsapp: shelter.whatsApp,
+      shelterWhatsapp: shelter.whatsapp,
       createdAt: shelter.createdAt,
       updatedAt: shelter.updatedAt,
     });
