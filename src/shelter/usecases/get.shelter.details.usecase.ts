@@ -13,7 +13,7 @@ export default class GetShelterDetailsUseCase
     private readonly shelterRepository: IShelterRepository,
   ) {}
 
-  async run(input: null): Promise<GetShelterDetailsUseCaseOutput> {
+  async run(): Promise<GetShelterDetailsUseCaseOutput> {
     const shelter = await this.shelterRepository.get();
 
     return new GetShelterDetailsUseCaseOutput({
